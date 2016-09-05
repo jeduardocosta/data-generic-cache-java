@@ -2,6 +2,7 @@ package datagenericcache.providers
 
 import spock.lang.Specification
 import java.time.Duration
+import java.util.concurrent.Callable
 
 class LocalMemoryProviderSpec extends Specification {
 
@@ -16,7 +17,7 @@ class LocalMemoryProviderSpec extends Specification {
 
     def "should return null when inform invalid key"() {
         when:
-        def obtained = cacheProvider.retrieve("WhenValueDoesntExistKey")
+        def obtained = cacheProvider.retrieve("whenValueDoesntExistKey")
 
         then:
         assert obtained == null
@@ -35,7 +36,7 @@ class LocalMemoryProviderSpec extends Specification {
 
     def "should add item when use retrieve or else"() {
         when:
-        def obtained = cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), value)
+        def obtained = cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), [call: {value}] as Callable)
 
         then:
         assert obtained == value
@@ -43,10 +44,10 @@ class LocalMemoryProviderSpec extends Specification {
 
     def "should expire item and return null"() {
         when:
-        cacheProvider.add(key, value, Duration.ofMillis(1));
+        cacheProvider.add(key, value, Duration.ofMillis(1))
 
         and:
-        Thread.sleep(10);
+        Thread.sleep(10)
 
         and:
         def obtained = cacheProvider.retrieve(key);
@@ -65,7 +66,7 @@ class LocalMemoryProviderSpec extends Specification {
 
    def "should remove an existing item"() {
         when:
-        cacheProvider.add(key, value, Duration.ofSeconds(1));
+        cacheProvider.add(key, value, Duration.ofSeconds(1))
 
         and:
         cacheProvider.remove(key);

@@ -2,6 +2,7 @@ package datagenericcache.providers;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalMemoryProvider implements CacheProvider {
@@ -59,12 +60,24 @@ public class LocalMemoryProvider implements CacheProvider {
 	}
 
 	@Override
-	public <T> T retrieveOrElse(String key, Duration duration, T newValue) {
+	public <T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction) {
 
 		T cachedObject = retrieve(key);
 
 		if (cachedObject == null) {
-			T retrievedObject = newValue;
+
+			T retrievedObject = null;
+
+			try {
+				retrievedObject = retrieveFunction.call();
+			} catch (Exception exception) {
+
+			}
+
+			if (retrievedObject == null) {
+				return null;
+			}
+
 			add(key, retrievedObject, duration);
 			cachedObject = retrievedObject;
 		}

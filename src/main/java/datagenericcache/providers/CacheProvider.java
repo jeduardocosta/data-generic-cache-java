@@ -1,6 +1,7 @@
 package datagenericcache.providers;
 
 import java.time.Duration;
+import java.util.concurrent.Callable;
 
 public interface CacheProvider {
 	<T> void add(String key, T value, Duration duration);
@@ -13,5 +14,5 @@ public interface CacheProvider {
 
 	<T> T retrieve(String key);
 
-	<T> T retrieveOrElse(String key, Duration duration, T newValue);
+	<T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction);
 }

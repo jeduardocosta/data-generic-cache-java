@@ -5,12 +5,15 @@ import static org.junit.Assert.assertEquals;
 import java.time.Duration;
 import org.junit.*;
 
+import static org.awaitility.Awaitility.*;
+import static java.util.concurrent.TimeUnit.*;
+
 public class LocalMemoryProviderTest {
 
 	private CacheProvider cacheProvider;
 
-	final String key = "key";
-	final String value = "value";
+	private final String key = "key";
+	private final String value = "value";
 
 	@Before
 	public void before() {
@@ -35,7 +38,7 @@ public class LocalMemoryProviderTest {
 
 	@Test
 	public void shouldAddWhenInvokingRetrieveOrElseInLocalMemoryCacher() {
-		cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), value);
+		cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), () -> value);
 
 		String obtained = cacheProvider.retrieve(key);
 
@@ -43,14 +46,12 @@ public class LocalMemoryProviderTest {
 	}
 
 	@Test
-	public void shouldExpireWhenAddWithTimeSpanInLocalMemoryCacher() throws InterruptedException {
-		cacheProvider.add(key, value, Duration.ofMillis(1));
+	public void shouldExpireWhenAddWithTimeSpanInLocalMemoryCacher() {
+		cacheProvider.add(key, value, Duration.ofMillis(50));
 
-		Thread.sleep(10);
-
-		String obtained = cacheProvider.retrieve(key);
-
-		assertEquals(null, obtained);
+		await()
+                .atMost(110, MILLISECONDS)
+                .until(() -> cacheProvider.retrieve(key) == null);
 	}
 
 	@Test
