@@ -9,6 +9,9 @@ public class LocalMemoryProviderTest {
 
 	private CacheProvider cacheProvider;
 
+	final String key = "key";
+	final String value = "value";
+
 	@Before
 	public void before() {
 		cacheProvider = new LocalMemoryProvider();
@@ -16,72 +19,55 @@ public class LocalMemoryProviderTest {
 
 	@Test
 	public void shouldRetrieveNullWhenValueDoesntExistInLocalMemoryCacher() {
-
-		String obtained = this.cacheProvider.retrieve("ShouldRetrieveNullWhenValueDoesntExistKey");
+		String obtained = cacheProvider.retrieve("whenValueDoesntExistKey");
 
 		assertEquals(null, obtained);
 	}
 
 	@Test
 	public void shouldAddAndRetrieveSuccessfullInLocalMemoryCacher() {
+		cacheProvider.add(key, value, Duration.ofSeconds(1));
 
-		final String key = "ShouldAddAndRetrieveSuccessfullyKey";
-		final String value = "ShouldAddAndRetrieveSuccessfullyValue";
-
-		this.cacheProvider.add(key, value, Duration.ofSeconds(1));
-
-		String obtained = this.cacheProvider.retrieve(key);
+		String obtained = cacheProvider.retrieve(key);
 
 		assertEquals(value, obtained);
 	}
 
 	@Test
 	public void shouldAddWhenInvokingRetrieveOrElseInLocalMemoryCacher() {
-		final String key = "ShouldAddWhenInvokingRetrieveOrElseKey";
-		final String value = "ShouldAddWhenInvokingRetrieveOrElseValue";
+		cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), value);
 
-		this.cacheProvider.retrieveOrElse(key, Duration.ofSeconds(1), value);
-
-		String obtained = this.cacheProvider.retrieve(key);
+		String obtained = cacheProvider.retrieve(key);
 
 		assertEquals(value, obtained);
 	}
 
 	@Test
 	public void shouldExpireWhenAddWithTimeSpanInLocalMemoryCacher() throws InterruptedException {
-		final String key = "ShouldExpireWhenAddWithTimespanKey";
-		final String value = "ShouldExpireWhenAddWithTimespanValue";
-
-		this.cacheProvider.add(key, value, Duration.ofMillis(1));
+		cacheProvider.add(key, value, Duration.ofMillis(1));
 
 		Thread.sleep(10);
 
-		String obtained = this.cacheProvider.retrieve(key);
+		String obtained = cacheProvider.retrieve(key);
 
 		assertEquals(null, obtained);
 	}
 
 	@Test
 	public void shouldCheckIfValueExistsInLocalMemoryCacher() {
-		final String key = "ShouldCheckIfValueExistsInLocalMemoryCacher";
-		final String value = "ShouldCheckIfValueExistsInLocalMemoryCacher";
+		cacheProvider.add(key, value, Duration.ofSeconds(1));
 
-		this.cacheProvider.add(key, value, Duration.ofSeconds(1));
-
-		boolean obtained = this.cacheProvider.exists(key);
+		boolean obtained = cacheProvider.exists(key);
 
 		assertEquals(true, obtained);
 	}
 
 	@Test
 	public void shouldRemoveValueInLocalMemoryCacher() {
-		final String key = "ShouldRemoveValueInLocalMemoryCacher";
-		final String value = "ShouldRemoveValueInLocalMemoryCacher";
+		cacheProvider.add(key, value, Duration.ofSeconds(1));
+		cacheProvider.remove(key);
 
-		this.cacheProvider.add(key, value, Duration.ofSeconds(1));
-		this.cacheProvider.remove(key);
-
-		boolean obtained = this.cacheProvider.exists(key);
+		boolean obtained = cacheProvider.exists(key);
 
 		assertEquals(false, obtained);
 	}
