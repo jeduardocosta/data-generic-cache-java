@@ -1,5 +1,7 @@
 package datagenericcache.providers;
 
+import datagenericcache.models.MemoryData;
+
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Callable;

@@ -1,4 +1,4 @@
-package datagenericcache.providers;
+package datagenericcache.models;
 
 import java.time.Duration;
 import java.time.Instant;

@@ -1,5 +1,6 @@
 package datagenericcache.providers
 
+import datagenericcache.providers.LocalMemoryProvider
 import spock.lang.Specification
 import java.time.Duration
 import java.util.concurrent.Callable

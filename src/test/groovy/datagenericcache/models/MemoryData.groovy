@@ -1,9 +1,9 @@
-package datagenericcache.providers
+package datagenericcache.providers.models
 
+import datagenericcache.models.MemoryData
 import spock.lang.Specification
 
 import java.time.Duration
-
 
 class MemoryDataSpec  extends Specification {
 
