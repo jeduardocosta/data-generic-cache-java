@@ -18,7 +18,7 @@ public class CacheProviderFactory {
     public CacheProviderFactory() {
         ConfigurationProviderFactory configurationProviderFactory = new ConfigurationProviderFactory();
         ConfigurationProvider configurationProvider = configurationProviderFactory.create();
-        applicationConfig = configurationProvider.bind("data_generic_cache", ApplicationConfig.class);
+        applicationConfig = configurationProvider.bind("data_generic_cache_providers", ApplicationConfig.class);
     }
 
     static {

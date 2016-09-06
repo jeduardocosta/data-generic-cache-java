@@ -1,13 +1,13 @@
-data_generic_cache:
+data_generic_cache_providers:
   providers:
-    - 'redis'
-    - 'mongodb'
-    - 'localmemory'
+     - 'redis'
+     - 'mongodb'
+     - 'localmemory'
 
-  redis:
-    host: '127.0.0.1'
-    port_number: 6379
+data_generic_cache_redis:
+  host: '127.0.0.1'
+  portNumber: 6379
 
-  mongodb:
-    host: '127.0.0.1'
-    port_number: 27017
+data_generic_cache_mongodb:
+  host: '127.0.0.1'
+  portNumber: 27017

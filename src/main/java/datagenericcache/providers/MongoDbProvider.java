@@ -2,6 +2,8 @@ package datagenericcache.providers;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import datagenericcache.models.ProviderConfig;
+import datagenericcache.models.ProviderConfigImpl;
 import org.bson.Document;
 
 import java.time.Duration;
@@ -14,12 +16,17 @@ public class MongoDbProvider implements CacheProvider {
     private final String COLLECTION_NAME = "datagenericcache_collection";
     private MongoDatabase database;
 
+    public MongoDbProvider() {
+        ProviderConfig providerConfig = new ProviderConfigImpl("data_generic_cache_mongodb");
+        createDatabase(new MongoClient(providerConfig.host(), providerConfig.portNumber()));
+    }
+
     public MongoDbProvider(String host, int portNumber) {
         this(new MongoClient(host, portNumber));
     }
 
     public MongoDbProvider(MongoClient mongoClient) {
-        database = mongoClient.getDatabase("datagenericcache_data");
+        createDatabase(mongoClient);
     }
 
     @Override
@@ -92,7 +99,6 @@ public class MongoDbProvider implements CacheProvider {
         }
 
         return cachedObject;
-
     }
 
     @Override
@@ -110,5 +116,9 @@ public class MongoDbProvider implements CacheProvider {
         }
 
         return document;
+    }
+
+    private void createDatabase(MongoClient mongoClient) {
+        database = mongoClient.getDatabase("datagenericcache_data");
     }
 }

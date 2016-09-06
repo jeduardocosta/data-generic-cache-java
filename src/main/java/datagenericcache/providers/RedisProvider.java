@@ -1,6 +1,8 @@
 package datagenericcache.providers;
 
 import com.alibaba.fastjson.JSON;
+import datagenericcache.models.ProviderConfig;
+import datagenericcache.models.ProviderConfigImpl;
 import redis.clients.jedis.Jedis;
 
 import java.time.Duration;
@@ -9,8 +11,13 @@ import java.util.concurrent.Callable;
 public class RedisProvider implements CacheProvider {
     private Jedis redis;
 
+    public RedisProvider() {
+        ProviderConfig providerConfig = new ProviderConfigImpl("data_generic_cache_redis");
+        this.redis = new Jedis(providerConfig.host(), providerConfig.portNumber());
+    }
+
     public RedisProvider(String host, int portNumber) {
-        this.redis = new Jedis(host, portNumber);
+        this(new Jedis(host, portNumber));
     }
 
     public RedisProvider(Jedis redis) {
