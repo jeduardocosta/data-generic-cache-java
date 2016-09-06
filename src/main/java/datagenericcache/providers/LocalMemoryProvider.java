@@ -12,12 +12,12 @@ public class LocalMemoryProvider implements CacheProvider {
     private static Map<String, Object> cache;
 
     static {
-        cache = new ConcurrentHashMap<String, Object>();
+        cache = new ConcurrentHashMap<>();
     }
 
     @Override
     public <T> void add(String key, T value, Duration duration) {
-        MemoryData<T> data = new MemoryData<T>(value, duration);
+        MemoryData<T> data = new MemoryData<>(value, duration);
         cache.put(key.toLowerCase(), data);
     }
 

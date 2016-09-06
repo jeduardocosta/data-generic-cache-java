@@ -7,14 +7,14 @@ import java.time.Duration;
 import java.util.concurrent.Callable;
 
 public class RedisProvider implements CacheProvider {
-
     private Jedis redis;
 
-    public RedisProvider() {
+    public RedisProvider(String host, int portNumber) {
+        this.redis = new Jedis(host, portNumber);
     }
 
-    public RedisProvider(String host, int portNumber) {
-        redis = new Jedis(host, portNumber);
+    public RedisProvider(Jedis redis) {
+        this.redis = redis;
     }
 
     @Override

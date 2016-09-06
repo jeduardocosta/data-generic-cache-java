@@ -1,9 +1,9 @@
 package datagenericcache.providers;
 
 import com.alibaba.fastjson.JSON;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import redis.clients.jedis.Jedis;
@@ -18,11 +18,15 @@ public class RedisProviderTest {
     private final String key = "key";
     private final String value = "value";
 
-    @InjectMocks
-    private CacheProvider cacheProvider = new RedisProvider();
-
     @Mock
     private Jedis redisMock;
+
+    private CacheProvider cacheProvider;
+
+    @Before
+    public void before() {
+        cacheProvider = new RedisProvider(redisMock);
+    }
 
     @Test
     public void shouldRetrieveNullWhenValueDoesntExistInRedisProvider() {

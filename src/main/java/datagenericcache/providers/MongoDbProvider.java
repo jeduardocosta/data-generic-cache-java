@@ -15,7 +15,10 @@ public class MongoDbProvider implements CacheProvider {
     private MongoDatabase database;
 
     public MongoDbProvider(String host, int portNumber) {
-        MongoClient mongoClient = new MongoClient(host, portNumber);
+        this(new MongoClient(host, portNumber));
+    }
+
+    public MongoDbProvider(MongoClient mongoClient) {
         database = mongoClient.getDatabase("datagenericcache_data");
     }
 
