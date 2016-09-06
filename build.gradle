@@ -26,4 +26,5 @@ dependencies {
     testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile "org.mockito:mockito-core:1.+"
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-2'
+    testCompile 'org.testcontainers:testcontainers:1.1.5'
 }
