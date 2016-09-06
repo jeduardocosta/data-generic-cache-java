@@ -7,7 +7,7 @@ mainClassName = 'datagenericcache.Application'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
 }
 
@@ -19,7 +19,11 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    compile 'com.alibaba:fastjson:1.2.16'
+    compile 'redis.clients:jedis:2.9.0'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.awaitility:awaitility:2.0.0'
+    testCompile "org.mockito:mockito-core:1.+"
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-2'
 }

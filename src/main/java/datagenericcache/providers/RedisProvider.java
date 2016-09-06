@@ -1,22 +1,28 @@
 package datagenericcache.providers;
 
+import com.alibaba.fastjson.JSON;
+import redis.clients.jedis.Jedis;
+
 import java.time.Duration;
-import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class LocalMemoryProvider implements CacheProvider {
+public class RedisProvider implements CacheProvider {
 
-    private static Map<String, Object> cache;
+    private Jedis redis;
 
-    static {
-        cache = new ConcurrentHashMap<String, Object>();
+    public RedisProvider() {
+    }
+
+    public RedisProvider(String host, int portNumber) {
+        redis = new Jedis(host, portNumber);
     }
 
     @Override
     public <T> void add(String key, T value, Duration duration) {
-        MemoryData<T> data = new MemoryData<T>(value, duration);
-        cache.put(key.toLowerCase(), data);
+        String json = JSON.toJSONString(value);
+
+        redis.set(key.toLowerCase(), json);
+        redis.expire(key.toLowerCase(), (int) duration.getSeconds());
     }
 
     @Override
@@ -27,45 +33,37 @@ public class LocalMemoryProvider implements CacheProvider {
 
     @Override
     public void remove(String key) {
-        cache.remove(key.toLowerCase());
+        redis.del(key.toLowerCase());
     }
 
     @Override
     public boolean exists(String key) {
-        return cache.get(key.toLowerCase()) != null;
+        return redis.exists(key.toLowerCase());
     }
 
     @Override
     public <T> T retrieve(String key) {
-        Object retrieved = cache.get(key.toLowerCase());
+        String json = redis.get(key.toLowerCase());
 
-        if (retrieved == null) {
+        if (json == null) {
             return null;
         }
 
-        MemoryData<Object> memoryData = (retrieved instanceof MemoryData ? (MemoryData<Object>) retrieved : null);
+        T result = null;
 
-        if (memoryData == null) {
-            return null;
+        try {
+            result = (T) JSON.parse(json);
+        } catch (Exception exception) {
         }
 
-        if (memoryData.isExpired()) {
-            remove(key);
-            return null;
-        }
-
-        T value = (T) memoryData.getValue();
-        return value;
-
+        return result;
     }
 
     @Override
     public <T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction) {
-
         T cachedObject = retrieve(key);
 
         if (cachedObject == null) {
-
             T retrievedObject = null;
 
             try {
