@@ -73,4 +73,9 @@ public class MySqlProvider implements CacheProvider {
     public <T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public void flush() {
+        throw new NotImplementedException();
+    }
 }

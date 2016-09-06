@@ -27,6 +27,11 @@ public class RedisProviderIntegrationTest {
         }
     }
 
+    @After
+    public void after() {
+        cacheProvider.flush();
+    }
+
     @Test
     public void shouldRetrieveNullWhenValueDoesntExistInRedisLiveProvider() {
         String obtained = cacheProvider.retrieve("whenValueDoesntExistKey");

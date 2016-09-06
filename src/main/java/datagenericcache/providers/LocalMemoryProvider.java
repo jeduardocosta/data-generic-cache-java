@@ -61,11 +61,9 @@ public class LocalMemoryProvider implements CacheProvider {
 
     @Override
     public <T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction) {
-
         T cachedObject = retrieve(key);
 
         if (cachedObject == null) {
-
             T retrievedObject = null;
 
             try {
@@ -82,5 +80,10 @@ public class LocalMemoryProvider implements CacheProvider {
         }
 
         return cachedObject;
+    }
+
+    @Override
+    public void flush() {
+        cache.clear();
     }
 }

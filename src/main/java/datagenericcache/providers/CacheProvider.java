@@ -15,4 +15,6 @@ public interface CacheProvider {
 	<T> T retrieve(String key);
 
 	<T> T retrieveOrElse(String key, Duration duration, Callable<T> retrieveFunction);
+
+	void flush();
 }

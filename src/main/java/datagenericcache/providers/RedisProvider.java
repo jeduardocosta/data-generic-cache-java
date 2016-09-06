@@ -81,4 +81,9 @@ public class RedisProvider implements CacheProvider {
 
         return cachedObject;
     }
+
+    @Override
+    public void flush() {
+        redis.flushAll();
+    }
 }
