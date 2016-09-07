@@ -1,6 +1,5 @@
 package org.datagenericcache.providers
 
-import org.datagenericcache.providers.LocalMemoryProvider
 import spock.lang.Specification
 import java.time.Duration
 import java.util.concurrent.Callable
@@ -74,5 +73,20 @@ class LocalMemoryProviderSpec extends Specification {
 
         then:
         cacheProvider.exists(key) == false
+    }
+
+    def "should update value when use set method"() {
+        when:
+        cacheProvider.add(key, value, Duration.ofSeconds(1))
+
+        and:
+        cacheProvider.set(key, "newValue", Duration.ofSeconds(1))
+
+        and:
+        def obtained = cacheProvider.retrieve(key)
+
+        then:
+        assert obtained == "newValue"
+
     }
 }

@@ -4,8 +4,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.datagenericcache.providers.CacheProvider;
-import org.datagenericcache.providers.MongoDbProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
