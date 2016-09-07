@@ -1,9 +1,11 @@
+group = 'org.datagenericcache'
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'application'
 apply plugin: 'idea'
 
-mainClassName = 'datagenericcache.Application'
+mainClassName = 'org.datagenericcache.CacheClient'
 
 buildscript {
     repositories {
