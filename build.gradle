@@ -70,14 +70,16 @@ publishing {
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    configurations = ['archives']
     publications = ['MyPublication']
     pkg {
         repo = 'data-generic-cache'
         name = 'data-generic-cache-client'
         userOrg = user
-        licenses = ['MIT']
+        desc = 'A simple library to cache data using custom providers'
+        websiteUrl = 'https://github.com/jeduardocosta/data-generic-cache-java'
+        issueTrackerUrl = 'https://github.com/jeduardocosta/data-generic-cache/issues'
         vcsUrl = 'https://github.com/jeduardocosta/data-generic-cache-java.git'
+        licenses = ['MIT']
         labels = ['cache', 'local-memory', 'mongodb', 'redis']
         version {
             name = '1.0'
