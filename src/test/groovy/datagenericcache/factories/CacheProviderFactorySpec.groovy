@@ -1,6 +1,5 @@
 package datagenericcache.factories
 
-import datagenericcache.providers.LocalMemoryProvider
 import datagenericcache.providers.MongoDbProvider
 import datagenericcache.providers.RedisProvider
 import spock.lang.Specification
@@ -14,7 +13,7 @@ class CacheProviderFactorySpec extends Specification {
         def providerClasses = factory.create();
 
         and:
-        def expected = [RedisProvider.class, MongoDbProvider.class, LocalMemoryProvider.class]
+        def expected = [RedisProvider.class, MongoDbProvider.class]
 
         then:
         providerClasses == expected

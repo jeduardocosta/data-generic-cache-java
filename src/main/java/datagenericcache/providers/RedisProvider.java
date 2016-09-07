@@ -29,7 +29,10 @@ public class RedisProvider implements CacheProvider {
         String json = JSON.toJSONString(value);
 
         redis.set(key.toLowerCase(), json);
-        redis.expire(key.toLowerCase(), (int) duration.getSeconds());
+
+        if (duration != null) {
+            redis.expire(key.toLowerCase(), (int) duration.getSeconds());
+        }
     }
 
     @Override

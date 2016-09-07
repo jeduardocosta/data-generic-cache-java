@@ -1,6 +1,7 @@
 package datagenericcache.factories;
 
 import datagenericcache.models.ApplicationConfig;
+import datagenericcache.providers.CacheProvider;
 import datagenericcache.providers.LocalMemoryProvider;
 import datagenericcache.providers.MongoDbProvider;
 import datagenericcache.providers.RedisProvider;

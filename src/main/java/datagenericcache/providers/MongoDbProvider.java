@@ -1,6 +1,8 @@
 package datagenericcache.providers;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 import datagenericcache.models.ProviderConfig;
 import datagenericcache.models.ProviderConfigImpl;
@@ -14,19 +16,22 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class MongoDbProvider implements CacheProvider {
     private final String COLLECTION_NAME = "datagenericcache_collection";
+    private final int TIMEOUT_IN_SECONDS = 5;
+
     private MongoDatabase database;
 
     public MongoDbProvider() {
         ProviderConfig providerConfig = new ProviderConfigImpl("data_generic_cache_mongodb");
-        createDatabase(new MongoClient(providerConfig.host(), providerConfig.portNumber()));
-    }
-
-    public MongoDbProvider(String host, int portNumber) {
-        this(new MongoClient(host, portNumber));
+        MongoClient client = createMongoClient(providerConfig.host(), providerConfig.portNumber());
+        createDatabase(client);
     }
 
     public MongoDbProvider(MongoClient mongoClient) {
         createDatabase(mongoClient);
+    }
+
+    public MongoDbProvider(String host, int portNumber) {
+        createDatabase(createMongoClient(host, portNumber));
     }
 
     @Override
@@ -116,6 +121,17 @@ public class MongoDbProvider implements CacheProvider {
         }
 
         return document;
+    }
+
+    private MongoClient createMongoClient(String host, int portNumber) {
+        ServerAddress serverAddress = new ServerAddress(host, portNumber);
+
+        MongoClientOptions options = MongoClientOptions
+                .builder()
+                .connectTimeout(TIMEOUT_IN_SECONDS)
+                .build();
+
+        return new MongoClient(serverAddress, options);
     }
 
     private void createDatabase(MongoClient mongoClient) {
