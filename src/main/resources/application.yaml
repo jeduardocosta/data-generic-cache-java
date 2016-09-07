@@ -2,7 +2,6 @@ data_generic_cache_providers:
   providers:
      - 'redis'
      - 'mongodb'
-     - 'localmemory'
 
 data_generic_cache_redis:
   host: '127.0.0.1'
