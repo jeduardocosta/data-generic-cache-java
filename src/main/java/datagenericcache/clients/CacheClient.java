@@ -78,7 +78,6 @@ public class CacheClient implements CacheProvider {
     }
 
     private void doProcess(Runnable callback) {
-
         doProcess(() ->
         {
             callback.run();

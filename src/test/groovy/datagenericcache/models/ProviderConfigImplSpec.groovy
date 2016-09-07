@@ -8,10 +8,10 @@ class ProviderConfigImplSpec extends Specification {
         def provider = new ProviderConfigImpl("data_generic_cache_mongodb")
 
         then:
-        assert provider.host() == "127.0.0.1"
-
-        and:
-        assert provider.portNumber() == 27017
+        with(provider) {
+            host() == "127.0.0.1"
+            portNumber() == 27017
+        }
     }
 
     def "should return expected values when create redis provider"() {
@@ -19,9 +19,9 @@ class ProviderConfigImplSpec extends Specification {
         def provider = new ProviderConfigImpl("data_generic_cache_redis")
 
         then:
-        assert provider.host() == "127.0.0.1"
-
-        and:
-        assert provider.portNumber() == 6379
+        with(provider) {
+            host() == "127.0.0.1"
+            portNumber() == 6379
+        }
     }
 }
