@@ -1,5 +1,1 @@
-include 'shared'
-include 'api'
-include 'services:webservice'
-
-rootProject.name = 'data-generic-cache'
+rootProject.name = 'data-generic-cache-client'
