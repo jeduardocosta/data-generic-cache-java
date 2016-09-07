@@ -1,24 +1,28 @@
-group = 'org.datagenericcache'
-
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'application'
-apply plugin: 'idea'
-
-mainClassName = 'org.datagenericcache.CacheClient'
-
 buildscript {
     repositories {
         jcenter()
     }
 }
 
-repositories {
-    mavenCentral()
+plugins {
+    id "com.jfrog.bintray" version "1.7"
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = 'org.datagenericcache'
+version = '1.0'
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'idea'
+
+mainClassName = 'org.datagenericcache.CacheClient'
 
 dependencies {
     compile 'com.alibaba:fastjson:1.2.16'
@@ -31,4 +35,40 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-2'
     testCompile 'org.testcontainers:testcontainers:1.1.5'
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'org.datagenericcache'
+            artifactId 'datagenericcache-client'
+            version version
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['MyPublication']
+    pkg {
+        repo = 'generic'
+        name = 'data-generic-cache-client'
+        userOrg = user
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/jeduardocosta/data-generic-cache-java.git'
+        labels = ['cache', 'local-memory', 'mongodb', 'redis']
+        version {
+            name = '1.0.0-SNAPSHOT'
+            desc = 'Data Generic Cache 1.0.0-SNAPSHOT'
+            released  = new Date()
+            vcsTag = '1.0.0'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
 }
