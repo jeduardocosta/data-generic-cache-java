@@ -36,13 +36,13 @@ public class MongoDbProvider implements CacheProvider {
 
     @Override
     public <T> void add(String key, T value, Duration duration) {
-        Document document = CreateDocument(key, value, duration);
+        Document document = createDocument(key, value, duration);
         database.getCollection(COLLECTION_NAME).insertOne(document);
     }
 
     @Override
     public <T> void set(String key, T value, Duration duration) {
-        Document document = CreateDocument(key, value, duration);
+        Document document = createDocument(key, value, duration);
         Document filter = new Document("key", key.toLowerCase());
         database.getCollection(COLLECTION_NAME).updateMany(filter, document);
     }
@@ -111,7 +111,7 @@ public class MongoDbProvider implements CacheProvider {
         database.getCollection(COLLECTION_NAME).drop();
     }
 
-    private <T> Document CreateDocument(String key, T value, Duration duration) {
+    private <T> Document createDocument(String key, T value, Duration duration) {
         Document document = new Document()
                 .append("key", key.toLowerCase())
                 .append("value", value);

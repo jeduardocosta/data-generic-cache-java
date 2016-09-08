@@ -22,16 +22,16 @@ public class CacheClientFactory {
     }
 
     public CacheProvider create(List<Class> providers) {
-        CacheProvider activeCacheProvider = GetActiveCacheProvider();
+        CacheProvider activeCacheProvider = getActiveCacheProvider();
 
         if (activeCacheProvider == null) {
-            activeCacheProvider = GetAvailableCacheProvider(providers);
+            activeCacheProvider = getAvailableCacheProvider(providers);
         }
 
         return activeCacheProvider;
     }
 
-    private CacheProvider GetAvailableCacheProvider(List<Class> providers) {
+    private CacheProvider getAvailableCacheProvider(List<Class> providers) {
         CacheProvider availableCacheProvider = null;
         Iterator<Class> iterator = providers.iterator();
 
@@ -52,7 +52,7 @@ public class CacheClientFactory {
         return availableCacheProvider;
     }
 
-    private CacheProvider GetActiveCacheProvider() {
+    private CacheProvider getActiveCacheProvider() {
         CacheProvider activeProvider = null;
 
         if (localMemoryProvider.exists(ACTIVE_CACHE_PROVIDER)) {
@@ -60,7 +60,7 @@ public class CacheClientFactory {
 
             if (!(isWorking(activeProvider))) {
                 localMemoryProvider.remove(ACTIVE_CACHE_PROVIDER);
-                return GetActiveCacheProvider();
+                return getActiveCacheProvider();
             }
         }
 
