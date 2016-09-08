@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CacheProviderFactory {
 
-    private static ApplicationConfig applicationConfig;
+    private ApplicationConfig applicationConfig;
     private static HashMap<String, Class> providerClasses;
 
     public CacheProviderFactory() {
